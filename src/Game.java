@@ -1,43 +1,87 @@
 import java.util.ArrayList;
+//import java.util.Arrays;
 import java.util.Random;
 
 public class Game {
-    private Plateau plateau;
-    private ArrayList<Carte> cartes;
-    private int nombreDeTours;
+    /**
+     * Le plateau sur lequel on va jouer.
+     */
+    private Board board;
+
+    /**
+     * La liste des cartes.
+     */
+    private ArrayList<Card> cards;
+
+
+
     /*Default settings*/
 
+    /*
+    private ArrayList<Cell> cells = new ArrayList<>(Arrays.asList(new CellProperty("propriete1",10),new CellProperty("propriete2",20),
+            new CellProperty("propriete3",30),new CellProperty("propriete4",50),
+            new CellProperty("propriete5",100),new CellProperty("propriete6",150),
+            new CellProperty("propriete7",200),new CellProperty("propriete8",300)));
+    */
 
-    public Game(int nombreDeCase, int nombreDeJoueurs, int nombreDeTours){
-        plateau = new Plateau(nombreDeCase, nombreDeJoueurs);
+    /**
+     * Constructeur Game.
+     *
+     * @param numberOfCells
+     *          Le nombre de cases du plateau
+     * @param numberOfPlayers
+     *          Le nombre de joueurs dans la partie
+     * @param numberOfRounds
+     *          Le nombre de tours avant la fin de la partie
+     */
+    public Game(int numberOfCells, int numberOfPlayers, int numberOfRounds) {
+        board = new Board(numberOfCells, numberOfPlayers);
+        start(numberOfRounds);
+
     }
 
-    public void partie(int nbTours){
-        for (int i = 0; i < nbTours; i++) {
-            for (Joueur joueur:plateau.joueurs) {
-                lancer(joueur);
+    /**
+     * Lance la partie et effectue un certain nombre de tours.
+     *
+     * @param numberOfRounds
+     *          Le nombre de tours avant la fin de la partie
+     */
+    public void start(int numberOfRounds) {
+        for (int i = 0; i < numberOfRounds; i++) {
+            for (Player player : board.getPlayers()) {
+                launch(player);
             }
         }
-        finDePartie();
+        end();
     }
 
-    public void lancer(Joueur joueur){
-        System.out.println("Tour de : "+joueur);
-        Random rand = new Random(); //instance of random class
-        int max = 6;
-        int de1 = rand.nextInt(max)+1;
-        int de2 = rand.nextInt(max)+1;
-        int resultat = de1 + de2;
-        System.out.println("Un "+de1+" ! et un "+de2+" ! "+joueur.getNom()+" avance de "+resultat+" cases.");
-        joueur.avancer(resultat);
-        System.out.println(plateau.getCaseAt(joueur.getPositionSurLePlateau()));
+    /**
+     * Lance les des et fait avancer le joueur.
+     *
+     * @param player
+     *          Le joueur dont c'est le tour
+     */
+    public void launch(Player player) {
+        System.out.println("Tour de : " + player);
+        Random rand = new Random(); //instance de random class
+        final int  max = 6;
+        int de1 = rand.nextInt(max) + 1;
+        int de2 = rand.nextInt(max) + 1;
+        int result = de1 + de2;
+        System.out.println("Un " + de1 + " ! et un " + de2 + " ! " + player + " avance de " + result + " cases.");
+        player.move(result);
+        System.out.println(board.getCaseAt(player.getPositionOnBoard()));
         System.out.println();
     }
 
-    public void finDePartie(){
+
+    /**
+     * Affiche les resultats de fin de partie pour chacun des joueurs.
+     */
+    public void end() {
         System.out.println("Partie terminée, voici la position des joueurs :");
-        for (Joueur joueur:plateau.joueurs) {
-            System.out.println(joueur + " " + plateau.getCaseAt(joueur.getPositionSurLePlateau()));
+        for (Player player : board.getPlayers()) {
+            System.out.println(player + " " + board.getCaseAt(player.getPositionOnBoard()));
         }
     }
 }
