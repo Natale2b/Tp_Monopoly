@@ -22,8 +22,8 @@ public abstract class Cell {
      *
      * Le nom attribué à la case est pour le moment celui du nombre actuel d'instances de Cell
      */
-    public Cell() {
-        name = String.valueOf(count);
+    public Cell(String name) {
+        name = name;
         count++;
     }
 
@@ -37,6 +37,7 @@ public abstract class Cell {
         return "Vous tombez sur : " + name;
     }
 
+    public String getName() { return  name;}
     /**
      * Methode abstraite.
      * Applique les effets/interactions d'une case

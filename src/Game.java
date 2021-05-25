@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 //import java.util.Arrays;
+import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Game {
     /**
@@ -13,6 +15,7 @@ public class Game {
      */
     private ArrayList<Card> cards;
 
+    private ArrayList<Player> players = new ArrayList<>();
 
 
     /*Default settings*/
@@ -24,7 +27,7 @@ public class Game {
             new CellProperty("propriete7",200),new CellProperty("propriete8",300)));
     */
 
-    /**
+    /*
      * Constructeur Game.
      *
      * @param numberOfCells
@@ -33,12 +36,64 @@ public class Game {
      *          Le nombre de joueurs dans la partie
      * @param numberOfRounds
      *          Le nombre de tours avant la fin de la partie
+     *
+     * @deprecated depuis Iteration 2
+     * @see Game(Cell[], int, int)
      */
+    /*
     public Game(int numberOfCells, int numberOfPlayers, int numberOfRounds) {
-        board = new Board(numberOfCells, numberOfPlayers);
+        board = new Board(numberOfCells);
+        start(numberOfRounds);
+
+    }*/
+
+    public Game(Board board, Player[] players, int numberOfRounds) {
+        this.board = board;
+        this.players = new ArrayList<>(Arrays.asList(players));
         start(numberOfRounds);
 
     }
+
+    /**
+     * Constructeur Game.
+     *
+     * @param board
+     *          Le plateau
+     * @param numberOfPlayers
+     *          Le nombre de joueurs dans la partie
+     * @param numberOfRounds
+     *          Le nombre de tours avant la fin de la partie
+     *
+     */
+    public Game(Board board, int numberOfPlayers, int numberOfRounds) {
+        this.board = board;
+
+        for (int i = 0; i < numberOfPlayers; i++) {
+            Scanner input = new Scanner(System.in);
+            System.out.println("Entrez le nom du joueur");
+            players.add(new Player(input.next(), board));
+        }
+
+        start(numberOfRounds);
+
+    }
+
+    /**
+     * Constructeur Game.
+     *
+     * @param cells
+     *          Liste predefinie de cases d'un plateau
+     * @param numberOfPlayers
+     *          Le nombre de joueurs dans la partie
+     * @param numberOfRounds
+     *          Le nombre de tours avant la fin de la partie
+     */
+    /*
+    public Game(Cell[] cells, int numberOfPlayers, int numberOfRounds) {
+        board = new Board(cells, numberOfPlayers);
+        start(numberOfRounds);
+
+    }*/
 
     /**
      * Lance la partie et effectue un certain nombre de tours.
@@ -48,8 +103,14 @@ public class Game {
      */
     public void start(int numberOfRounds) {
         for (int i = 0; i < numberOfRounds; i++) {
-            for (Player player : board.getPlayers()) {
+            for (Player player : players) {
                 launch(player);
+                prettyTest();
+                System.out.println("FIN DU TOUR");
+                System.out.println();
+                Scanner input = new Scanner(System.in);
+                System.out.println("Continuer ?(y/n)");
+                String temp = input.next();
             }
         }
         end();
@@ -70,7 +131,6 @@ public class Game {
         int result = de1 + de2;
         System.out.println("Un " + de1 + " ! et un " + de2 + " ! " + player + " avance de " + result + " cases.");
         player.move(result);
-        System.out.println(board.getCaseAt(player.getPositionOnBoard()));
         System.out.println();
     }
 
@@ -80,8 +140,17 @@ public class Game {
      */
     public void end() {
         System.out.println("Partie terminée, voici la position des joueurs :");
-        for (Player player : board.getPlayers()) {
-            System.out.println(player + " " + board.getCaseAt(player.getPositionOnBoard()));
+        for (Player player : players) {
+            System.out.println(player + " " + board.getCellAt(player.getPositionOnBoard()));
+        }
+    }
+
+    public void prettyTest(){
+        for (Player player:players) {
+            System.out.println(player +" / " + player.getMoney() + "// possede : ");
+            for (CellProperty deed:player.getProperties()) {
+                System.out.println(deed.getName());
+            }
         }
     }
 }
