@@ -1,3 +1,5 @@
+package MonopolyClasses;
+
 /**
  * Est la classe representant une case d'un plateau.
  *
@@ -13,9 +15,9 @@ public abstract class Cell {
     private String name;
 
     /**
-     * Le nombre d'instances de la classe Cell.
+     * Le plateau de la classe Cell.
      */
-    private static int count = 0;
+    protected Board board;
 
     /**
      * Constructeur Cell.
@@ -23,8 +25,7 @@ public abstract class Cell {
      * Le nom attribué à la case est pour le moment celui du nombre actuel d'instances de Cell
      */
     public Cell(String name) {
-        name = name;
-        count++;
+        this.name = name;
     }
 
     /**
@@ -47,4 +48,9 @@ public abstract class Cell {
      *          Le joueur qui est tombe sur cette case
      */
     public abstract void apply(Player player);
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
 }

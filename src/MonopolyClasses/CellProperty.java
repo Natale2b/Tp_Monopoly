@@ -1,3 +1,5 @@
+package MonopolyClasses;
+
 import java.util.Scanner;
 
 public class CellProperty extends Cell{
@@ -11,6 +13,11 @@ public class CellProperty extends Cell{
      * Le prix d'une maison.
      */
     private int housePrice;
+
+    /**
+     * Le nieau de construction du terrain.
+     */
+    private int housing = 0;
 
     /**
      * Les differents loyers possibles de la propriete.
@@ -222,5 +229,24 @@ public class CellProperty extends Cell{
      */
     public void setRent(int rent) {
         this.rent = rent;
+    }
+
+    public void reset(){
+        buildable = false;
+        rent = rents[0];
+        housing = 0;
+        owner = null;
+    }
+
+    public void build(){
+        if(buildable && owner.getMoney() >= housePrice && housing <= rents.length){
+            owner.subtractMoney(housePrice);
+            housing++;
+            actualize();
+        }
+    }
+
+    private void actualize(){
+        this.rent = rents[housing];
     }
 }

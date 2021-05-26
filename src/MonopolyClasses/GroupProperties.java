@@ -1,9 +1,10 @@
+package MonopolyClasses;
+
 import java.util.ArrayList;
 
 public class GroupProperties {
-    ArrayList<CellProperty> group = new ArrayList<>();
+    ArrayList<CellProperty> group;
     String name;
-    int numberOfCards = 0;
 
     /**
      * Constructeur GroupProperties.
@@ -13,6 +14,7 @@ public class GroupProperties {
      */
     public GroupProperties(String name) {
         this.name = name;
+        this.group = new ArrayList<>();
     }
 
     /**
@@ -23,7 +25,6 @@ public class GroupProperties {
      */
     public void addProperty(CellProperty cardProp) {
         group.add(cardProp);
-        numberOfCards++;
     }
 
     /**
@@ -32,6 +33,7 @@ public class GroupProperties {
      * @return le nombre de cartes dans le groupe
      */
     public int getNumberOfCards() {
-        return numberOfCards;
+        return group.size();
     }
+
 }

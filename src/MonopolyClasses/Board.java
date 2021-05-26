@@ -1,22 +1,17 @@
+package MonopolyClasses;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public class Board {
 
-    public final int incomeRound = 20;
 
     /**
      * La liste des cases du plateau de jeu.
      */
     private ArrayList<Cell> cells;
 
-
-    /**
-     * La liste des joeurs.
-     */
-    //private ArrayList<Player> players = new ArrayList<>();
 
     /**
      * Le nombre de cases
@@ -88,8 +83,11 @@ public class Board {
      *
     */
     public Board(Cell[] cells) {
-        this.cells = new ArrayList<Cell>(Arrays.asList(cells));
+        this.cells = new ArrayList<>(Arrays.asList(cells));
         nbCells = this.cells.size();
+        for (Cell cell : cells) {
+            cell.setBoard(this);
+        }
     }
 
     /**
@@ -127,6 +125,15 @@ public class Board {
         throw new NoSuchElementException("Cette case : " + name + "n'existe pas");
     }
 
+    public int getCellPosition(String name) {
+        for (Cell cell : cells) {
+            if (cell.getName().compareTo(name) == 0){
+                return cells.indexOf(cell);
+            }
+        }
+        throw new NoSuchElementException("La case " + name + " n'existe pas");
+    }
+
     /**
      * Retourne une string decrivant l'objet.
      *
@@ -136,16 +143,4 @@ public class Board {
         return cells;
     }
 
-
-
-
-    /**
-     * Retourne la liste des joueurs.
-     *
-     * @return les joueurs du plateau sous forme d'une arrayList
-     */
-    /*
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }*/
 }

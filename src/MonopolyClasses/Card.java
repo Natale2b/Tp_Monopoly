@@ -1,14 +1,17 @@
+package MonopolyClasses;
+
 import java.util.ArrayList;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 public class Card {
 
     private String name;
-    private ArrayList arguments;
-    private Function<ArrayList, Boolean> atActivation;
+    private ArrayList<Object> arguments;
+    private Consumer<ArrayList<Object>> atActivation;
     private boolean canBeKept;
 
-    public Card(String name, ArrayList arguments, Function atActivation, boolean canBeKept) {
+    public Card(String name, ArrayList<Object> arguments,
+                Consumer<ArrayList<Object>> atActivation, boolean canBeKept) {
         this.atActivation = atActivation;
         this.arguments = arguments;
         this.name = name;
@@ -17,7 +20,8 @@ public class Card {
 
     public void use(Player player){
         arguments.add(0,player);
-        atActivation.apply(arguments);
+        atActivation.accept(arguments);
+        System.out.println("Card : " + name + "is used !");
     }
 
     public boolean isCanBeKept() {
